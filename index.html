@@ -75,7 +75,7 @@
     </tr>`
   };
 
-  fetch('aa_meetings_kerala.json')
+  fetch('https://chaitprabhu.github.io/aa-meetings-search/aa_meetings_kerala.json')
     .then(res => res.json())
     .then(data => {
       const meetingList = new List('meetings', options, data);
