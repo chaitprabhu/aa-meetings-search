@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AA Meetings Search</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 1em;
+    }
+    input, select {
+      padding: 8px;
+      margin: 5px;
+      font-size: 1em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1em;
+    }
+    th, td {
+      padding: 0.5em;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+
+<h2>AA Meetings Search (Kerala Region)</h2>
+
+<input class="search" placeholder="Search by Group, Address, Pincode..." />
+<select id="dayFilter">
+  <option value="">All Days</option>
+  <option value="MONDAY">Monday</option>
+  <option value="TUESDAY">Tuesday</option>
+  <option value="WEDNESDAY">Wednesday</option>
+  <option value="THURSDAY">Thursday</option>
+  <option value="FRIDAY">Friday</option>
+  <option value="SATURDAY">Saturday</option>
+  <option value="SUNDAY">Sunday</option>
+</select>
+
+<div id="meetings">
+  <table>
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Group</th>
+        <th>Address</th>
+        <th>Pincode</th>
+        <th>Time</th>
+        <th>Contact</th>
+      </tr>
+    </thead>
+    <tbody class="list"></tbody>
+  </table>
+</div>
+
+<script>
+  const options = {
+    valueNames: ['DAY', "GROUP'S NAME", 'ADDRESS', 'PINCODE', 'TIME', 'CONTACT'],
+    item: `<tr>
+      <td class="DAY"></td>
+      <td class="GROUP'S NAME"></td>
+      <td class="ADDRESS"></td>
+      <td class="PINCODE"></td>
+      <td class="TIME"></td>
+      <td class="CONTACT"></td>
+    </tr>`
+  };
+
+  fetch('aa_meetings_kerala.json')
+    .then(res => res.json())
+    .then(data => {
+      const meetingList = new List('meetings', options, data);
+
+      document.getElementById('dayFilter').addEventListener('change', function () {
+        const selectedDay = this.value.toUpperCase();
+        meetingList.filter(item => {
+          if (!selectedDay) return true;
+          return item.values().DAY.toUpperCase() === selectedDay;
+        });
+      });
+    });
+</script>
+
+</body>
+</html>
